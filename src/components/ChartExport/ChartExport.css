@@ -1,0 +1,256 @@
+.chart-export {
+  background: var(--background-paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 1, 1);
+  position: relative;
+}
+
+.chart-export.entering {
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+}
+
+.chart-export.collapsed {
+  width: 40px;
+  min-width: 40px;
+  padding: 0;
+}
+
+.collapsed-title {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  background: var(--background-paper);
+}
+
+.collapsed-title span {
+  transform: rotate(-90deg);
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.chart-export.collapsed .collapsed-title {
+  opacity: 1;
+  visibility: visible;
+}
+
+.chart-export.collapsed .export-content-wrapper {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.export-content-wrapper {
+  flex: 1;
+  padding: 16px;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 1;
+  visibility: visible;
+}
+
+.export-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+}
+
+.export-header .section-title {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 !important;
+}
+
+.close-icon {
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+  font-size: 20px !important;
+  opacity: 0.7;
+}
+
+.close-icon:hover {
+  color: var(--text-primary);
+  opacity: 1;
+}
+
+.export-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  padding-right: 8px;
+  flex: 1;
+}
+
+.export-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.export-section .section-title {
+  padding: 6px 8px;
+  color: var(--text-secondary) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  user-select: none;
+}
+
+.export-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.export-button {
+  text-transform: none !important;
+  background-color: var(--primary) !important;
+  color: white !important;
+  height: 36px;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  padding: 6px 16px !important;
+  min-width: unset !important;
+  width: 100% !important;
+}
+
+.export-button:hover {
+  opacity: 0.9;
+  background-color: var(--primary) !important;
+}
+
+.export-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  justify-content: space-between;
+}
+
+.export-selector:hover {
+  border-color: #818CF8;
+  background: var(--hover-background);
+}
+
+.export-selector .MuiSvgIcon-root {
+  font-size: 20px;
+  color: var(--text-secondary);
+}
+
+.export-text {
+  font-size: 14px;
+}
+
+.export-menu .MuiPaper-root {
+  background: var(--background-paper);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.export-menu .MuiMenuItem-root {
+  font-size: 13px;
+  padding: 8px 16px;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.export-menu .MuiMenuItem-root:hover {
+  background: var(--hover-background);
+  color: var(--text-primary);
+}
+
+.export-menu-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.export-menu-item .MuiSvgIcon-root {
+  font-size: 20px !important;
+  color: var(--text-secondary) !important;
+}
+
+.export-menu-item:hover .MuiSvgIcon-root {
+  color: var(--text-primary) !important;
+}
+
+/* MUI Component Overrides */
+.MuiFormControlLabel-root {
+  margin: 0 !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  transition: background-color 0.2s ease !important;
+  min-height: 40px !important;
+  cursor: pointer !important;
+}
+
+.MuiFormControlLabel-root:hover {
+  background-color: var(--hover-background) !important;
+}
+
+.MuiCheckbox-root {
+  color: var(--text-secondary) !important;
+  padding: 4px !important;
+  margin: 0 4px !important;
+}
+
+.MuiCheckbox-root.Mui-checked {
+  color: var(--primary) !important;
+}
+
+.MuiCheckbox-root .MuiSvgIcon-root {
+  font-size: 24px !important;
+}
+
+.MuiFormControlLabel-label {
+  font-size: 14px !important;
+  color: var(--text-primary) !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  user-select: none !important;
+}

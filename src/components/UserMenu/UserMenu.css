@@ -1,0 +1,114 @@
+.user-menu-popover {
+  margin-top: 8px;
+}
+
+.user-menu-popover .MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(2px) !important;
+}
+
+.user-menu-popover .MuiPaper-root {
+  background: var(--background-paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1301;
+}
+
+.user-info {
+  padding: 16px;
+  position: relative;
+  background: var(--background-paper);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info .user-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-info .MuiAvatar-root {
+  margin-bottom: 0;
+}
+
+.user-info h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.user-email {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.MuiList-root {
+  padding: 8px 0 !important;
+  width: 260px;
+  background: var(--background-paper);
+}
+
+.MuiListItem-root {
+  padding: 8px 16px !important;
+  min-height: 40px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.MuiListItem-root:hover {
+  background-color: var(--hover-background) !important;
+}
+
+.MuiListItem-root:hover .MuiListItemIcon-root {
+  color: var(--primary) !important;
+}
+
+.MuiListItem-root .MuiListItemIcon-root {
+  min-width: 36px !important;
+  color: var(--text-secondary) !important;
+  transition: color 0.2s ease-in-out !important;
+}
+
+.MuiListItem-root .MuiListItemText-root {
+  margin: 0 !important;
+}
+
+.MuiListItem-root .MuiListItemText-root span {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+.user-menu .MuiIconButton-root {
+  padding: 6px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.user-menu .MuiIconButton-root:hover {
+  background-color: rgba(108, 92, 231, 0.1) !important;
+}
+
+[data-theme='dark'] .user-menu .MuiIconButton-root:hover {
+  background-color: rgba(129, 140, 248, 0.1) !important;
+}
+
+.user-menu .MuiIconButton-root.active {
+  background-color: var(--hover-background) !important;
+  color: var(--primary) !important;
+}
+
+.user-menu .MuiSvgIcon-root {
+  font-size: 24px;
+}
+
+.MuiDivider-root {
+  margin: 8px 0 !important;
+  border-color: var(--border) !important;
+}

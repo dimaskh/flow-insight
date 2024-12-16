@@ -1,0 +1,334 @@
+.kpi-section {
+  background: var(--background-paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.kpi-section.collapsed {
+  padding: 16px;
+}
+
+.kpi-section.collapsed .metrics-grid {
+  display: none;
+}
+
+.content-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 24px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.section-header:hover {
+  color: var(--text-primary);
+}
+
+.section-header:hover .MuiSvgIcon-root {
+  color: var(--text-primary);
+}
+
+.kpi-section.collapsed .section-header {
+  margin-bottom: 0;
+}
+
+.section-header .left-section {
+  display: flex;
+  align-items: center;
+  height: 24px;
+}
+
+.section-header .right-section {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.section-header .MuiSvgIcon-root {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.section-title {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary);
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.section-title.MuiTypography-root {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: var(--text-primary);
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 24px !important;
+}
+
+.kpi-section.collapsed .left-section .section-title {
+  display: flex !important;
+  align-items: center !important;
+  height: 24px !important;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  max-height: 2000px;
+  opacity: 1;
+  transform-origin: top;
+  transform: scaleY(1);
+  overflow: hidden;
+  will-change: transform, max-height, opacity;
+  min-width: 0;
+}
+
+.kpi-section.collapsed .metrics-grid {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  transform: scaleY(0);
+  pointer-events: none;
+}
+
+.metric-card {
+  background-color: var(--background-paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.metric-card:hover {
+  border-color: var(--border);
+}
+
+[data-theme='dark'] .metric-card {
+  border-color: var(--border);
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.metric-title {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.metric-value {
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 600;
+  margin: 8px 0;
+  transition: color 0.3s ease;
+}
+
+.metric-trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.metric-trend.positive {
+  color: var(--success);
+}
+
+.metric-trend.negative {
+  color: var(--error);
+}
+
+.metric-chart {
+  margin-top: 16px;
+  height: 60px;
+}
+
+.metric-icon {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-secondary);
+  transition: stroke 0.3s ease;
+}
+
+.metric-card:hover .metric-icon {
+  stroke: var(--text-primary);
+}
+
+[data-theme='dark'] .metric-icon {
+  stroke: var(--text-secondary);
+}
+
+[data-theme='dark'] .metric-card:hover .metric-icon {
+  stroke: var(--text-primary);
+}
+
+.trend-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.trend-icon.positive {
+  stroke: var(--success);
+}
+
+.trend-icon.negative {
+  stroke: var(--error);
+}
+
+[data-theme='dark'] .trend-icon.positive {
+  stroke: color-mix(in srgb, var(--success) 90%, white);
+}
+
+[data-theme='dark'] .trend-icon.negative {
+  stroke: color-mix(in srgb, var(--error) 90%, white);
+}
+
+/* Dark theme specific overrides */
+[data-theme='dark'] .metric-trend.positive {
+  color: color-mix(in srgb, var(--success) 90%, white);
+}
+
+[data-theme='dark'] .metric-trend.negative {
+  color: color-mix(in srgb, var(--error) 90%, white);
+}
+
+[data-theme='dark'] .kpi-title,
+[data-theme='dark'] .kpi-value,
+[data-theme='dark'] .kpi-label {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .kpi-subtitle {
+  color: var(--text-secondary);
+}
+
+/* Responsive styles */
+@media screen and (max-width: 1354px) and (min-width: 788px) {
+  .metrics-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  
+  .metric-card {
+    min-width: 0;
+    padding: 10px;
+  }
+  
+  .metric-title {
+    font-size: 10px !important;
+  }
+  
+  .metric-value {
+    font-size: 20px !important;
+  }
+  
+  .metric-trend {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 787px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1400px) {
+  .metrics-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1200px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .section-header .right-section {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+.section-header .MuiIconButton-root {
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.section-header .MuiIconButton-root:hover {
+  color: var(--text-primary);
+  background-color: var(--background-hover);
+}
+
+[data-theme='dark'] .section-header .MuiIconButton-root {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .section-header .MuiIconButton-root:hover {
+  color: var(--text-primary);
+  background-color: var(--background-hover);
+}
+
+.metric-trend .MuiSvgIcon-root {
+  color: currentColor;
+  font-size: 16px;
+}
+
+[data-theme='dark'] .metric-trend.positive .MuiSvgIcon-root {
+  color: color-mix(in srgb, var(--success) 90%, white);
+}
+
+[data-theme='dark'] .metric-trend.negative .MuiSvgIcon-root {
+  color: color-mix(in srgb, var(--error) 90%, white);
+}

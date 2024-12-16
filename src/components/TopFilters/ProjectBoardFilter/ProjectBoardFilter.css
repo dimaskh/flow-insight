@@ -1,0 +1,207 @@
+.project-board-filter {
+  position: relative;
+}
+
+.filter-button {
+  height: 40px !important;
+  padding: 8px 14px !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  color: var(--text-primary) !important;
+  background: var(--background) !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+  min-width: 180px !important;
+  max-width: 320px !important;
+  justify-content: space-between !important;
+}
+
+.filter-button .MuiButton-endIcon {
+  margin-left: 8px !important;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.filter-button-content {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.filter-button:hover {
+  border-color: var(--primary) !important;
+  background: var(--background) !important;
+}
+
+.filter-button:hover .MuiButton-endIcon {
+  color: var(--text-primary);
+}
+
+.filter-popover {
+  margin-top: 8px;
+}
+
+.filter-popover .MuiPaper-root {
+  background: var(--background-paper) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  width: 320px !important;
+}
+
+.filter-content {
+  display: flex;
+  flex-direction: column;
+  height: 360px;
+}
+
+.search-wrapper {
+  padding-bottom:16px;
+  background: var(--background-paper);
+  border-bottom: 1px solid var(--border);
+}
+
+.search-wrapper .MuiInputBase-root {
+  height: 36px;
+  background: var(--background);
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.search-wrapper .MuiInputBase-input {
+  padding: 0 12px !important;
+  height: 36px !important;
+  font-size: 13px !important;
+  color: var(--text-primary) !important;
+}
+
+.search-wrapper .MuiInputBase-input::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 0.8 !important;
+  font-size: 13px !important;
+}
+
+.search-wrapper .MuiOutlinedInput-notchedOutline {
+  border: 1px solid var(--border) !important;
+}
+
+.search-wrapper .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--border-hover) !important;
+}
+
+.search-wrapper .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--primary) !important;
+  border-width: 1px !important;
+}
+
+[data-theme='dark'] .search-wrapper .MuiInputBase-root {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .search-wrapper .MuiInputBase-root:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .search-wrapper .MuiInputBase-root.Mui-focused {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .search-wrapper .MuiInputBase-input {
+  color: var(--text-primary) !important;
+}
+
+.filter-section {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 16px;
+  padding-right: 16px;
+}
+
+.filter-section::-webkit-scrollbar {
+  width: 4px;
+}
+
+.filter-section::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
+}
+
+.filter-section::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.filter-section-header {
+  padding: 6px 0;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+/* Checkbox styles */
+.filter-option {
+  width: 100%;
+  margin: 0 !important;
+  padding: 4px 0 !important;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.filter-option:hover {
+  background: var(--hover-background);
+}
+
+.filter-option .MuiCheckbox-root {
+  padding: 4px !important;
+  margin-right: 8px !important;
+}
+
+.filter-option .MuiTypography-root {
+  font-size: 13px !important;
+  color: var(--text-primary) !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4 !important;
+}
+
+/* Project styles */
+.filter-option.project-option {
+  padding-left: 0 !important;
+}
+
+.filter-option.project-option .MuiTypography-root {
+  font-weight: 500;
+}
+
+/* Board styles */
+.filter-option.board-option {
+  padding-left: 28px !important;
+}
+
+.filter-option.board-option .MuiTypography-root {
+  color: var(--text-secondary) !important;
+  font-weight: normal;
+}
+
+.filter-option.board-option:hover .MuiTypography-root {
+  color: var(--text-primary) !important;
+}
+
+.no-results {
+  padding: 16px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* Dark theme adjustments */
+[data-theme='dark'] .search-wrapper {
+  border-color: rgba(255, 255, 255, 0.1);
+}

@@ -1,0 +1,447 @@
+.main-chart-container {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  height: calc(100vh - var(--header-height) - 32px - 100px);
+  min-height: 0;
+}
+
+.chart-container {
+  display: flex;
+  gap: 16px;
+  height: 100%;
+  position: relative;
+  padding: 16px;
+  background: var(--background);
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.chart-filters {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.chart-filters.exiting {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.chart-export {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.chart-export.entering {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.main-chart {
+  background: var(--background-paper);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  height: 100%;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-content h6 {
+  color: var(--text-primary);
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  margin: 0;
+}
+
+.section-subtitle {
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  margin: 0;
+}
+
+.chart-content {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.main-chart-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.main-chart-type-selector {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background-color: var(--hover-background);
+  border-radius: 8px;
+}
+
+.main-chart-type-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.main-chart-type-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.main-chart-type-button:hover {
+  background-color: var(--hover-background);
+  color: var(--text-primary);
+}
+
+.main-chart-type-button.active {
+  background-color: var(--background-paper);
+  color: var(--primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .main-chart-type-selector {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme='dark'] .main-chart-type-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .main-chart-type-button.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+/* Recharts Customization */
+.recharts-wrapper {
+  margin: 0;
+  padding: 0;
+  width: 100% !important;
+}
+
+.recharts-cartesian-grid {
+  transform: none;
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--border);
+  stroke-opacity: 0.5;
+}
+
+.recharts-cartesian-axis-line {
+  stroke: var(--border);
+}
+
+.recharts-cartesian-axis-tick-line {
+  stroke: var(--border);
+}
+
+.recharts-cartesian-axis-tick-value {
+  fill: var(--text-secondary);
+  font-size: 12px;
+}
+
+.recharts-yAxis .recharts-cartesian-axis-tick-value {
+  transform: translateX(-8px);
+}
+
+.main-chart .recharts-surface {
+  overflow: visible;
+}
+
+.recharts-tooltip-wrapper {
+  background-color: var(--background-paper) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  font-size: 11px !important;
+}
+
+.recharts-default-tooltip {
+  background-color: var(--background) !important;
+  border: none !important;
+  border-radius: 8px;
+  padding: 8px !important;
+}
+
+.recharts-tooltip-item {
+  color: var(--text-secondary) !important;
+  padding: 1px 0 !important;
+  font-size: 11px !important;
+  color: var(--text-primary) !important;
+  line-height: 1.2 !important;
+}
+
+.recharts-tooltip-item-name {
+  color: var(--text-secondary) !important;
+}
+
+.recharts-tooltip-item-value {
+  color: var(--text-primary) !important;
+  font-weight: 500 !important;
+}
+
+.recharts-tooltip-label {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+  margin-bottom: 3px !important;
+  font-size: 11px !important;
+  color: var(--text-secondary) !important;
+}
+
+/* Legend customization */
+.recharts-legend-wrapper .recharts-legend-item {
+  margin-right: 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.recharts-legend-wrapper .recharts-legend-item-symbol {
+  width: 8px !important;
+  height: 8px !important;
+  margin-right: 6px !important;
+}
+
+/* Dark theme specific overrides */
+[data-theme='dark'] .recharts-cartesian-grid-horizontal line,
+[data-theme='dark'] .recharts-cartesian-grid-vertical line {
+  stroke-opacity: 0.2;
+}
+
+[data-theme='dark'] .recharts-tooltip-wrapper {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
+}
+
+[data-theme='dark'] .recharts-default-tooltip {
+  background-color: var(--background-paper) !important;
+}
+
+[data-theme='dark'] .chart-title,
+[data-theme='dark'] .chart-value {
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .chart-subtitle,
+[data-theme='dark'] .chart-legend {
+  color: var(--text-secondary);
+}
+
+[data-theme='dark'] .chart-tooltip {
+  background-color: var(--background-paper);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] .section-subtitle {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Radar chart text adjustments */
+.recharts-polar-angle-axis-tick-value {
+  font-size: 11px !important;
+  fill: var(--text-secondary) !important;
+}
+
+.recharts-polar-radius-axis-tick-value {
+  font-size: 11px !important;
+  fill: var(--text-secondary) !important;
+}
+
+/* Bar chart hover highlight */
+.recharts-rectangle.recharts-bar-rectangle:hover {
+  fill-opacity: 0.95 !important;
+}
+
+/* Lighter hover background */
+.recharts-tooltip-cursor {
+  fill: rgba(200, 200, 200, 0.1) !important;
+}
+
+/* Responsive styles */
+@media (max-width: 960px) {
+  .main-chart {
+    padding: 12px;
+  }
+
+  .main-chart-header {
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-chart {
+    padding: 10px;
+  }
+
+  .main-chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .main-chart-controls {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .main-chart-type-selector {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.chart-icon {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text-secondary);
+  transition: stroke 0.3s ease;
+}
+
+.chart-control:hover .chart-icon {
+  stroke: var(--text-primary);
+}
+
+[data-theme='dark'] .chart-icon {
+  stroke: var(--text-secondary);
+}
+
+[data-theme='dark'] .chart-control:hover .chart-icon {
+  stroke: var(--text-primary);
+}
+
+.legend-icon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  margin-right: 8px;
+}
+
+[data-theme='dark'] .legend-icon {
+  opacity: 0.9;
+}
+
+.tooltip-icon {
+  width: 14px;
+  height: 14px;
+  stroke: var(--text-secondary);
+  margin-right: 6px;
+}
+
+[data-theme='dark'] .tooltip-icon {
+  stroke: var(--text-secondary);
+  opacity: 0.9;
+}
+
+.chart-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.chart-types {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--background);
+  border-radius: 8px;
+}
+
+.chart-type-button {
+  padding: 6px !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  border-radius: 6px !important;
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+.chart-type-button svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.chart-type-button:hover {
+  background: var(--hover-background) !important;
+  color: var(--text-primary) !important;
+}
+
+.chart-type-button.active {
+  background: var(--hover-background) !important;
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+.chart-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.action-button {
+  text-transform: none !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  padding: 6px 12px !important;
+  border-radius: 6px !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+  background: var(--background-paper) !important;
+  transition: all 0.2s ease !important;
+  gap: 6px !important;
+  height: 36px !important;
+  min-width: unset !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.action-button:hover {
+  border-color: var(--primary) !important;
+}
+
+.action-button .MuiSvgIcon-root {
+  font-size: 20px !important;
+  color: var(--text-secondary) !important;
+  margin-top: -1px !important;
+}
+
+.action-button:hover .MuiSvgIcon-root {
+  color: var(--primary) !important;
+}

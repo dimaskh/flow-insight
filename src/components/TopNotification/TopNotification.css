@@ -1,0 +1,65 @@
+.top-notification {
+  position: fixed;
+  top: 12px;
+  left: calc(50% + var(--sidebar-width)/2);
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 6px 12px;
+  background-color: rgb(236, 253, 243);
+  border: 1px solid rgb(209, 250, 229);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  animation: slideDown 0.3s ease-out;
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgb(6, 95, 70);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.notification-content svg {
+  width: 16px;
+  height: 16px;
+  color: rgb(6, 95, 70);
+}
+
+.notification-content .close-button {
+  padding: 4px;
+  margin-left: 4px;
+  color: rgb(6, 95, 70);
+  opacity: 0.8;
+}
+
+.notification-content .close-button:hover {
+  background-color: rgba(6, 95, 70, 0.08);
+}
+
+[data-theme='dark'] .top-notification {
+  background-color: rgba(6, 95, 70, 0.2);
+  border-color: rgba(4, 120, 87, 0.3);
+}
+
+[data-theme='dark'] .notification-content {
+  color: rgb(167, 243, 208);
+}
+
+[data-theme='dark'] .notification-content svg,
+[data-theme='dark'] .notification-content .close-button {
+  color: rgb(167, 243, 208);
+}
+
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
