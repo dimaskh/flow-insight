@@ -183,7 +183,7 @@
   font-size: 24px;
   font-weight: 600;
   color: var(--text-primary);
-  margin: 0 0 12px 0;
+  margin: 8px 0 16px 0;
 }
 
 .workflow-description {
@@ -253,6 +253,7 @@
   padding: 12px 16px;
   background: var(--background-default);
   border-radius: 8px;
+  margin-bottom: 4px;
   transition: background-color 0.2s ease;
 }
 
@@ -281,6 +282,57 @@
 .board-item .board-status.inactive {
   background-color: color-mix(in srgb, var(--text-secondary) 12%, transparent);
   color: var(--text-secondary);
+}
+
+.workflow-board {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: var(--background-default);
+  border-radius: 8px;
+  margin-bottom: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.board-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.board-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.board-name {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.project-name {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.board-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remove-board-button {
+  color: var(--text-secondary);
+  padding: 6px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.remove-board-button:hover {
+  background: var(--background-hover);
+  color: var(--error);
 }
 
 /* Responsive adjustments */

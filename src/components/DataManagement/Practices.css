@@ -1,4 +1,4 @@
-.objects-container {
+.practices-container {
   display: flex;
   height: 100%;
   background: var(--background-default);
@@ -6,7 +6,7 @@
   gap: 16px;
 }
 
-.objects-sidebar {
+.practices-sidebar {
   width: 280px;
   min-width: 280px;
   background: var(--background-paper);
@@ -17,7 +17,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0.0, 1, 1);
 }
 
-.objects-sidebar.hidden {
+.practices-sidebar.hidden {
   width: 0;
   min-width: 0;
   padding: 0;
@@ -26,7 +26,7 @@
   visibility: hidden;
 }
 
-.object-list {
+.practice-list {
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -34,20 +34,20 @@
   overflow-y: auto;
 }
 
-.object-list::-webkit-scrollbar {
+.practice-list::-webkit-scrollbar {
   width: 6px;
 }
 
-.object-list::-webkit-scrollbar-track {
+.practice-list::-webkit-scrollbar-track {
   background: var(--scrollbar-track);
 }
 
-.object-list::-webkit-scrollbar-thumb {
+.practice-list::-webkit-scrollbar-thumb {
   background-color: var(--scrollbar-thumb);
   border-radius: 20px;
 }
 
-.object-item {
+.practice-item {
   display: flex;
   align-items: center;
   padding: 8px 12px;
@@ -57,15 +57,15 @@
   user-select: none;
 }
 
-.object-item:hover {
+.practice-item:hover {
   background: var(--hover-background);
 }
 
-.object-item.active {
+.practice-item.active {
   background: var(--selected-background);
 }
 
-.object-name {
+.practice-name {
   flex: 1;
   font-size: 13px;
   color: var(--text-primary);
@@ -74,7 +74,7 @@
   text-overflow: ellipsis;
 }
 
-.object-content {
+.practice-content {
   flex: 1;
   background: var(--background-paper);
   border: 1px solid var(--border);
@@ -84,7 +84,7 @@
   overflow: hidden;
 }
 
-.object-header {
+.practice-header {
   padding: 18px 24px;
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -93,20 +93,20 @@
   background: var(--background-paper);
 }
 
-.object-title {
+.practice-title {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.object-title h6 {
+.practice-title h6 {
   margin: 0;
   font-size: 16px;
   font-weight: 500;
   color: var(--text-primary);
 }
 
-.object-actions {
+.practice-actions {
   display: flex;
   align-items: center;
   gap: 16px;
@@ -136,7 +136,7 @@
   color: var(--text-secondary);
 }
 
-.object-name-input {
+.practice-name-input {
   background: transparent;
   border: none;
   font-size: 16px;
@@ -147,12 +147,12 @@
   border-radius: 4px;
 }
 
-.object-name-input:focus {
+.practice-name-input:focus {
   background: var(--background-default);
   outline: none;
 }
 
-.object-table {
+.practice-table {
   flex: 1;
   overflow: auto;
   padding: 16px 24px;
@@ -172,13 +172,13 @@
   color: var(--error);
 }
 
-[data-theme='dark'] .object-name-input {
+[data-theme='dark'] .practice-name-input {
   background: var(--background-default);
   border: none;
   color: var(--text-primary);
 }
 
-[data-theme='dark'] .object-name-input:focus {
+[data-theme='dark'] .practice-name-input:focus {
   outline: none;
   box-shadow: 0 0 0 2px var(--primary-light);
 }

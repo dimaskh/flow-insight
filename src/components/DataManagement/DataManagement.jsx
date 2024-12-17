@@ -5,6 +5,7 @@ import Workflows from './Workflows';
 import AllWorkflows from './AllWorkflows';
 import Portfolios from './Portfolios';
 import Objects from './Objects';
+import Practices from './Practices';
 import './DataManagement.css';
 import CodeIcon from '@mui/icons-material/Code';
 import WorkIcon from '@mui/icons-material/Work';
@@ -69,6 +70,7 @@ const DataManagement = () => {
       )}
       {activeTab === 'objects' && <Objects />}
       {activeTab === 'portfolios' && <Portfolios />}
+      {activeTab === 'practices' && <Practices />}
     </div>
   );
 };

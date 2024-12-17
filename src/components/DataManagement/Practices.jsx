@@ -15,100 +15,100 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
-import './Objects.css';
+import './Practices.css';
 
-const initialObjects = [
-  { id: 1, name: 'Object 1', type: 'Type A', lastModified: '2024-01-20' },
-  { id: 2, name: 'Object 2', type: 'Type B', lastModified: '2024-01-19' },
-  { id: 3, name: 'Object 3', type: 'Type A', lastModified: '2024-01-18' },
+const initialPractices = [
+  { id: 1, name: 'Practice 1', type: 'Type A', lastModified: '2024-01-20' },
+  { id: 2, name: 'Practice 2', type: 'Type B', lastModified: '2024-01-19' },
+  { id: 3, name: 'Practice 3', type: 'Type A', lastModified: '2024-01-18' },
 ];
 
-const Objects = () => {
-  const [objects, setObjects] = useState(initialObjects);
-  const [activeObject, setActiveObject] = useState(objects[0].id);
+const Practices = () => {
+  const [practices, setPractices] = useState(initialPractices);
+  const [activePractice, setActivePractice] = useState(practices[0].id);
   const [showAddProjects, setShowAddProjects] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [objectProjects, setObjectProjects] = useState({});
-  const [editingObject, setEditingObject] = useState(null);
+  const [practiceProjects, setPracticeProjects] = useState({});
+  const [editingPractice, setEditingPractice] = useState(null);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
-  const activeObjectData = objects.find(p => p.id === activeObject);
+  const activePracticeData = practices.find(p => p.id === activePractice);
 
-  const handleDeleteObject = () => {
-    setObjects(prev => prev.filter(p => p.id !== activeObject));
-    setObjectProjects(prev => {
+  const handleDeletePractice = () => {
+    setPractices(prev => prev.filter(p => p.id !== activePractice));
+    setPracticeProjects(prev => {
       const updatedProjects = { ...prev };
-      delete updatedProjects[activeObject];
+      delete updatedProjects[activePractice];
       return updatedProjects;
     });
-    setActiveObject(objects[0]?.id);
+    setActivePractice(practices[0]?.id);
     setDeleteConfirmOpen(false);
   };
 
-  const startEditing = (objectId) => {
-    setEditingObject(objectId);
+  const startEditing = (practiceId) => {
+    setEditingPractice(practiceId);
   };
 
-  const handleKeyPress = (e, objectId) => {
+  const handleKeyPress = (e, practiceId) => {
     if (e.key === 'Enter') {
-      handleBlur(e, objectId);
+      handleBlur(e, practiceId);
     }
   };
 
-  const handleBlur = (e, objectId) => {
+  const handleBlur = (e, practiceId) => {
     const newName = e.target.value.trim();
     if (newName) {
-      setObjects(prev => prev.map(obj => 
-        obj.id === objectId ? { ...obj, name: newName } : obj
+      setPractices(prev => prev.map(practice => 
+        practice.id === practiceId ? { ...practice, name: newName } : practice
       ));
     }
-    setEditingObject(null);
+    setEditingPractice(null);
   };
 
   return (
-    <div className="objects-container">
-      <div className={`objects-sidebar ${showAddProjects ? 'hidden' : ''}`}>
-        <div className="object-list">
-          {objects.map((object) => (
+    <div className="practices-container">
+      <div className={`practices-sidebar ${showAddProjects ? 'hidden' : ''}`}>
+        <div className="practice-list">
+          {practices.map((practice) => (
             <div
-              key={object.id}
-              className={`object-item ${object.id === activeObject ? 'active' : ''}`}
-              onClick={() => setActiveObject(object.id)}
+              key={practice.id}
+              className={`practice-item ${practice.id === activePractice ? 'active' : ''}`}
+              onClick={() => setActivePractice(practice.id)}
             >
-              <Typography variant="body2" className="object-name">
-                {object.name}
+              <Typography variant="body2" className="practice-name">
+                {practice.name}
               </Typography>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="object-content">
-        <div className="object-header">
-          <div className="object-title">
-            {editingObject === activeObject ? (
+      <div className="practice-content">
+        <div className="practice-header">
+          <div className="practice-title">
+            {editingPractice === activePractice ? (
               <input
                 type="text"
-                defaultValue={activeObjectData?.name}
+                defaultValue={activePracticeData?.name}
                 autoFocus
-                onKeyPress={(e) => handleKeyPress(e, activeObject)}
-                onBlur={(e) => handleBlur(e, activeObject)}
-                className="object-name-input"
+                onKeyPress={(e) => handleKeyPress(e, activePractice)}
+                onBlur={(e) => handleBlur(e, activePractice)}
+                className="practice-name-input"
               />
             ) : (
               <>
-                <Typography variant="h6" component="h2">{activeObjectData?.name}</Typography>
+                <Typography variant="h6" component="h2">{activePracticeData?.name}</Typography>
                 <IconButton 
                   size="small" 
-                  aria-label="Edit object name"
-                  onClick={() => startEditing(activeObject)}
+                  aria-label="Edit practice name"
+                  onClick={() => startEditing(activePractice)}
                 >
                   <EditIcon fontSize="small" />
                 </IconButton>
               </>
             )}
           </div>
-          <div className="object-actions">
+          <div className="practice-actions">
             <div className="search-box">
               <SearchIcon />
               <input
@@ -141,7 +141,7 @@ const Objects = () => {
           </div>
         </div>
 
-        <div className="object-table">
+        <div className="practice-table">
           {/* Table content will go here */}
         </div>
       </div>
@@ -186,7 +186,7 @@ const Objects = () => {
               fontWeight: 500
             }}
           >
-            Are you sure you want to delete the selected object?
+            Are you sure you want to delete the selected practice?
           </DialogContentText>
           <DialogContentText 
             sx={{ 
@@ -195,7 +195,7 @@ const Objects = () => {
               lineHeight: 1.5
             }}
           >
-            This will permanently delete the object and remove all associated projects. The projects will remain in the database.
+            This will permanently delete the practice and remove all associated projects. The projects will remain in the database.
           </DialogContentText>
         </DialogContent>
         <DialogActions 
@@ -215,7 +215,7 @@ const Objects = () => {
             Cancel
           </Button>
           <Button 
-            onClick={handleDeleteObject}
+            onClick={handleDeletePractice}
             variant="contained"
             className="add-new-button MuiButton-containedError"
             sx={{ 
@@ -232,4 +232,4 @@ const Objects = () => {
   );
 };
 
-export default Objects;
+export default Practices;

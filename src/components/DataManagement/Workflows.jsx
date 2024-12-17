@@ -5,16 +5,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/Warning';
 import GridViewIcon from '@mui/icons-material/GridView';
+import { workflowData } from './AllWorkflows';
 import './Workflows.css';
 
-const workflowsList = [
-  { id: 0, name: 'All Workflows', icon: <GridViewIcon /> },
-  { id: 1, name: 'R&D', status: 'calibrated' },
-  { id: 2, name: 'Business Analysis', status: 'calibrated' },
-  { id: 3, name: 'Development', status: 'not-calibrated' },
-  { id: 4, name: 'Marketing', status: 'needs-review' }
-];
-
+// Get status icon based on status
 const getStatusIcon = (status) => {
   switch (status) {
     case 'calibrated':
@@ -29,15 +23,41 @@ const getStatusIcon = (status) => {
 };
 
 const Workflows = ({ onWorkflowSelect, selectedWorkflowId }) => {
-  const [activeWorkflow, setActiveWorkflow] = useState(workflowsList[0].id);
+  const [activeWorkflow, setActiveWorkflow] = useState(selectedWorkflowId || 'all');
+  const [workflowsList, setWorkflowsList] = useState([
+    { id: 'all', name: 'All Workflows', icon: <GridViewIcon /> },
+    ...workflowData.map(w => ({
+      id: w.id,
+      name: w.name,
+      status: w.status
+    }))
+  ]);
   const navigate = useNavigate();
 
+  // Update workflowsList when workflowData changes
   useEffect(() => {
-    if (selectedWorkflowId) {
-      setActiveWorkflow(selectedWorkflowId);
-    } else {
-      setActiveWorkflow(workflowsList[0].id);
-    }
+    const handleWorkflowDataUpdate = () => {
+      const currentWorkflowData = window.workflowData || workflowData;
+      setWorkflowsList([
+        { id: 'all', name: 'All Workflows', icon: <GridViewIcon /> },
+        ...currentWorkflowData.map(w => ({
+          id: w.id,
+          name: w.name,
+          status: w.status
+        }))
+      ]);
+    };
+
+    // Initial setup
+    handleWorkflowDataUpdate();
+
+    // Listen for workflowData updates
+    window.addEventListener('workflowDataUpdated', handleWorkflowDataUpdate);
+    return () => window.removeEventListener('workflowDataUpdated', handleWorkflowDataUpdate);
+  }, []);
+
+  useEffect(() => {
+    setActiveWorkflow(selectedWorkflowId || 'all');
   }, [selectedWorkflowId]);
 
   const handleAddWorkflow = () => {
@@ -46,13 +66,7 @@ const Workflows = ({ onWorkflowSelect, selectedWorkflowId }) => {
 
   const handleWorkflowClick = (workflow) => {
     setActiveWorkflow(workflow.id);
-    if (workflow.id === 0) {
-      // Clear selected workflow in AllWorkflows
-      onWorkflowSelect(null);
-    } else {
-      // Select the workflow in AllWorkflows
-      onWorkflowSelect(workflow.id);
-    }
+    onWorkflowSelect(workflow.id === 'all' ? null : workflow.id);
   };
 
   return (

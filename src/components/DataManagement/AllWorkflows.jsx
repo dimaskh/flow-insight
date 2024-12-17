@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, Paper } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/Warning';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -15,6 +15,17 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import './AllWorkflows.css';
+import FolderOutlinedIcon from '@mui/icons-material/FolderOutlined';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import SearchOffIcon from '@mui/icons-material/SearchOff';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 const workflowData = [
   {
@@ -131,37 +142,48 @@ const workflowData = [
   {
     id: 4,
     name: 'Marketing',
-    status: 'needs-review',
+    status: 'calibrated',
     linkedBoards: 6,
     mappedStatuses: 2,
-    lastUpdated: '4h 2m ago',
-    description: 'Marketing campaign workflow management',
+    lastUpdated: '1m ago',
+    description: 'Marketing workflow for content creation and approval',
     boards: [
-      { name: 'Campaign Planning', status: 'active' },
-      { name: 'Content Calendar', status: 'inactive' }
+      { name: 'Board Bulls', project: 'Project Basketball', status: 'active' },
+      { name: 'Board Lakers', project: 'Project Basketball', status: 'active' },
+      { name: 'Board Warriors', project: 'Project Basketball', status: 'active' }
     ],
     statusLabels: [
-      'Ideas',
-      'Planning',
-      'Creation',
-      'Review',
-      'Approval',
-      'Scheduled',
-      'Published'
+      'Backlog',
+      'To Do',
+      'In Progress',
+      'In Review',
+      'In Testing',
+      'In QA',
+      'Done'
     ],
-    mappedStatusesData: Array(7).fill([]),
+    mappedStatusesData: [
+      ['In Development'],
+      ['Code Review'],
+      ['In Progress', 'Development'],
+      ['Calibrated', 'In Review'],
+      ['Testing'],
+      ['QA'],
+      ['Done']
+    ],
     activeStatuses: [
-      'Content Planning',
-      'Design',
-      'Review',
-      'Approval',
-      'Scheduling',
-      'Publishing'
+      'In Progress',
+      'Revising',
+      'Calibrated',
+      'In Review',
+      'Development',
+      'Code Review',
+      'Testing',
+      'QA'
     ],
     inactiveStatuses: [
-      'Draft',
-      'Revision Needed',
-      'On Hold'
+      'In Development',
+      'Code Review',
+      'Bug Detected'
     ]
   }
 ];
@@ -171,7 +193,7 @@ export { workflowData };
 const getStatusIcon = (status) => {
   switch (status) {
     case 'calibrated':
-      return <CheckCircleIcon className="status-icon" />;
+      return <CheckCircleOutlineIcon className="status-icon" />;
     case 'not-calibrated':
       return <ErrorIcon className="status-icon" />;
     case 'needs-review':
@@ -567,7 +589,7 @@ const WorkflowDetails = ({ workflow, onClose }) => {
   const defaultActiveStatuses = [
     'In Progress',
     'Revising',
-    'Waiting for Review',
+    'Calibrated',
     'In Review',
     'Development',
     'Code Review',
@@ -594,13 +616,9 @@ const WorkflowDetails = ({ workflow, onClose }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedBoards, setSelectedBoards] = useState([]);
-  const [connectedBoards, setConnectedBoards] = useState([
-    { project: 'Project Basketball', boards: ['Board Bulls', 'Board Lakers', 'Board Warriors'] },
-    { project: 'Project Football', boards: ['Board Patriots'] },
-    { project: 'Project Baseball', boards: ['Board Yankees'] },
-    { project: 'Project Soccer', boards: ['Board Arsenal'] }
-  ]);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  const [connectedBoards, setConnectedBoards] = useState([]);
   const projectsDatabase = [
     {
       name: 'Project Basketball',
@@ -624,6 +642,25 @@ const WorkflowDetails = ({ workflow, onClose }) => {
     }
   ];
 
+  // Update boards when workflow changes
+  useEffect(() => {
+    if (workflow) {
+      // Initialize connected boards from workflow data
+      const boards = workflow.boards || [];
+      const groupedBoards = boards.reduce((groups, board) => {
+        const projectName = board.project || 'Project Basketball';
+        const existingGroup = groups.find(g => g.project === projectName);
+        if (existingGroup) {
+          existingGroup.boards.push(board.name);
+        } else {
+          groups.push({ project: projectName, boards: [board.name] });
+        }
+        return groups;
+      }, []);
+      setConnectedBoards(groupedBoards);
+    }
+  }, [workflow]);
+
   const getAvailableBoards = () => {
     const connectedBoardsList = connectedBoards.flatMap(group => group.boards);
     return projectsDatabase.map(project => ({
@@ -635,43 +672,53 @@ const WorkflowDetails = ({ workflow, onClose }) => {
   const getFilteredBoards = () => {
     if (!searchQuery) return [];
     
+    const query = searchQuery.toLowerCase();
     return getAvailableBoards()
-      .map(group => ({
-        project: group.project,
-        boards: group.boards.filter(board => 
-          board.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      }))
+      .map(group => {
+        const matchesProject = group.project.toLowerCase().includes(query);
+        return {
+          project: group.project,
+          boards: matchesProject ? group.boards : group.boards.filter(board => 
+            board.toLowerCase().includes(query)
+          ),
+          matchesProject
+        };
+      })
       .filter(group => group.boards.length > 0);
   };
 
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const handleAddBoards = () => {
+    if (selectedBoards.length === 0) return;
 
-  const handleAddBoard = (projectName, board) => {
     setConnectedBoards(prev => {
-      const projectGroup = prev.find(g => g.project === projectName);
-      if (projectGroup) {
-        return prev.map(g => 
-          g.project === projectName 
-            ? { ...g, boards: [...g.boards, board] }
-            : g
-        );
-      } else {
-        return [...prev, { project: projectName, boards: [board] }];
-      }
+      const newBoards = [...prev];
+      selectedBoards.forEach(({ project, board }) => {
+        const projectGroup = newBoards.find(g => g.project === project);
+        if (projectGroup) {
+          if (!projectGroup.boards.includes(board)) {
+            projectGroup.boards.push(board);
+          }
+        } else {
+          newBoards.push({ project, boards: [board] });
+        }
+      });
+      return newBoards;
     });
+
+    setSelectedBoards([]);
     setSearchQuery('');
     setIsSearchOpen(false);
   };
 
-  const handleRemoveBoard = (projectName, board) => {
-    setConnectedBoards(prev => 
-      prev.map(group => 
-        group.project === projectName
-          ? { ...group, boards: group.boards.filter(b => b !== board) }
-          : group
-      ).filter(group => group.boards.length > 0)
-    );
+  const toggleBoardSelection = (project, board) => {
+    setSelectedBoards(prev => {
+      const isSelected = prev.some(b => b.project === project && b.board === board);
+      if (isSelected) {
+        return prev.filter(b => !(b.project === project && b.board === board));
+      } else {
+        return [...prev, { project, board }];
+      }
+    });
   };
 
   const [activeStatuses, setActiveStatuses] = useState(workflow?.activeStatuses || defaultActiveStatuses);
@@ -710,27 +757,40 @@ const WorkflowDetails = ({ workflow, onClose }) => {
     return true;
   };
 
+  const [workflowName, setWorkflowName] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (workflow) {
+      setWorkflowName(workflow.name || '');
+    }
+  }, [workflow]);
+
   const handleNameChange = async (newName) => {
     if (!workflow) return;
 
     const updatedWorkflow = {
       ...workflow,
-      name: newName
+      name: newName,
+      lastUpdated: '1m ago'
     };
     
-    const success = await updateWorkflowData(updatedWorkflow);
+    const success = updateWorkflowData(updatedWorkflow);
     if (success) {
       setWorkflowName(newName);
       setIsEditing(false);
+      
+      // Notify parent components of the name change
+      if (window.dispatchEvent) {
+        window.dispatchEvent(new Event('workflowDataUpdated'));
+      }
     }
   };
 
   const calculateMappedStatusesCount = () => {
     return mappedStatuses.reduce((total, statuses) => total + (statuses ? statuses.length : 0), 0);
   };
-
-  const [workflowName, setWorkflowName] = useState(workflow?.name || '');
-  const [isEditing, setIsEditing] = useState(false);
 
   const handleStatusToggle = (status) => {
     if (activeStatuses.includes(status)) {
@@ -829,6 +889,53 @@ const WorkflowDetails = ({ workflow, onClose }) => {
     setMappedStatuses([...mappedStatuses, []]);
   };
 
+  const saveWorkflowChanges = () => {
+    if (!workflow) return false;
+
+    const flatBoards = connectedBoards.flatMap(group => 
+      group.boards.map(boardName => ({
+        name: boardName,
+        project: group.project,
+        status: 'active' // or get from original board if exists
+      }))
+    );
+
+    const updatedWorkflow = {
+      ...workflow,
+      boards: flatBoards,
+      linkedBoards: flatBoards.length,
+      activeStatuses,
+      inactiveStatuses,
+      statusLabels,
+      mappedStatusesData: mappedStatuses,
+      lastUpdated: '1m ago'
+    };
+    
+    const success = updateWorkflowData(updatedWorkflow);
+    return success;
+  };
+
+  // Auto-save when boards change
+  useEffect(() => {
+    if (workflow) {
+      saveWorkflowChanges();
+    }
+  }, [connectedBoards]);
+
+  const handleDeleteClick = () => {
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    // Add your delete logic here
+    console.log('Deleting workflow:', workflow.id);
+    setDeleteDialogOpen(false);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="workflow-details">
@@ -859,9 +966,106 @@ const WorkflowDetails = ({ workflow, onClose }) => {
                 </IconButton>
               </>
             )}
-          </div>
-          <div className="workflow-actions">
-            <button className="cancel-button" onClick={onClose}>Close</button>
+            <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', marginTop: '0px', gap: '16px' }}>
+              <div className={`workflow-status ${workflow.status === 'calibrated' ? 'calibrated' : 'not-calibrated'}`}>
+                {workflow.status === 'calibrated' ? (
+                  <CheckCircleOutlineIcon fontSize="small" />
+                ) : (
+                  <ErrorIcon fontSize="small" />
+                )}
+                {workflow.status === 'calibrated' ? 'Calibrated' : 'Not Calibrated'}
+              </div>
+              <IconButton 
+                onClick={handleDeleteClick}
+                size="small"
+                className="delete-workflow-btn"
+              >
+                <DeleteOutlineIcon fontSize="small" />
+              </IconButton>
+            </div>
+
+            <Dialog
+              open={deleteDialogOpen}
+              onClose={handleDeleteCancel}
+              PaperProps={{
+                sx: {
+                  width: '400px',
+                  padding: '24px',
+                  backgroundColor: 'var(--background-paper)'
+                }
+              }}
+            >
+              <DialogTitle 
+                sx={{ 
+                  color: 'var(--text-primary)', 
+                  fontWeight: 600,
+                  padding: '0 0 16px 0',
+                  fontSize: '18px',
+                  lineHeight: '24px',
+                  margin: 0
+                }}
+              >
+                Confirm Deletion
+              </DialogTitle>
+              <DialogContent 
+                sx={{ 
+                  padding: 0,
+                  marginBottom: '24px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '8px'
+                }}
+              >
+                <DialogContentText 
+                  sx={{ 
+                    color: 'var(--text-primary)', 
+                    fontSize: '14px',
+                    lineHeight: 1.5,
+                    fontWeight: 500
+                  }}
+                >
+                  Are you sure you want to delete the selected workflow?
+                </DialogContentText>
+                <DialogContentText 
+                  sx={{ 
+                    color: 'var(--text-secondary)', 
+                    fontSize: '13px',
+                    lineHeight: 1.5
+                  }}
+                >
+                  This will permanently delete the workflow and all its settings. This action cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions 
+                sx={{ 
+                  padding: 0,
+                  gap: '8px'
+                }}
+              >
+                <Button 
+                  onClick={handleDeleteCancel} 
+                  variant="outlined"
+                  sx={{ 
+                    textTransform: 'none',
+                    fontWeight: 500
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleDeleteConfirm}
+                  variant="contained"
+                  className="add-new-button MuiButton-containedError"
+                  sx={{ 
+                    textTransform: 'none',
+                    fontWeight: 500
+                  }}
+                  autoFocus
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </div>
         </div>
         
@@ -877,68 +1081,172 @@ const WorkflowDetails = ({ workflow, onClose }) => {
               </div>
               <div className="column-content boards-column">
                 <div className="search-container">
-                  <div className="search-box">
-                    <SearchIcon className="search-icon" />
+                  <div className="boards-search-box">
+                    <SearchIcon className="boards-search-icon" />
                     <input 
                       type="text" 
-                      placeholder="Search and Add Boards" 
+                      placeholder="Search boards by name or project" 
                       value={searchQuery}
                       onChange={(e) => {
-                        setSearchQuery(e.target.value);
-                        setIsSearchOpen(true);
+                        const query = e.target.value.trim();
+                        if (query.length > 0) {
+                          setSearchQuery(query);
+                          setIsSearchOpen(true);
+                        } else {
+                          setSearchQuery('');
+                          setIsSearchOpen(false);
+                        }
                       }}
                       onFocus={() => setIsSearchOpen(true)}
+                      className="boards-search-input"
                     />
                     {searchQuery && (
-                      <CloseIcon 
-                        className="clear-icon"
+                      <IconButton 
+                        className="boards-clear-button"
+                        size="small"
                         onClick={() => {
                           setSearchQuery('');
                           setIsSearchOpen(false);
                         }}
-                      />
+                      >
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
                     )}
                   </div>
                   
                   {isSearchOpen && searchQuery && (
-                    <div className="search-dropdown">
-                      {getFilteredBoards().map((group, groupIndex) => (
-                        <div key={groupIndex} className="project-group">
-                          <div className="project-name">{group.project}</div>
-                          {group.boards.map((board, boardIndex) => (
-                            <div 
-                              key={boardIndex} 
-                              className="board-item clickable"
-                              onClick={() => handleAddBoard(group.project, board)}
-                            >
-                              <span>{board}</span>
-                              <AddIcon className="add-icon" />
+                    <Paper
+                      elevation={0}
+                      className="search-dropdown"
+                      sx={{
+                        position: 'absolute',
+                        top: 'calc(100% + 4px)',
+                        left: 0,
+                        right: 0,
+                        maxHeight: 400,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        zIndex: 1000,
+                        backgroundColor: 'var(--background-default)',
+                        border: '1px solid var(--border)',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                      }}
+                    >
+                      <div className="search-dropdown-content">
+                        {getFilteredBoards().map((group) => (
+                          <div key={group.project} className="project-group">
+                            <div className="project-name">
+                              <div className="project-header">
+                                <FolderOutlinedIcon className="project-icon" />
+                                <span>{group.project}</span>
+                                <span className="board-count">({group.boards.length})</span>
+                              </div>
                             </div>
-                          ))}
-                        </div>
-                      ))}
-                      {getFilteredBoards().length === 0 && (
-                        <div className="no-results">
-                          No matching boards found
+                            <div className="board-list">
+                              {group.boards.map((boardName) => {
+                                const isSelected = selectedBoards.some(
+                                  (board) => board.project === group.project && board.board === boardName
+                                );
+                                return (
+                                  <div
+                                    key={boardName}
+                                    className={`workflow-board ${isSelected ? 'selected' : ''}`}
+                                    onClick={() => toggleBoardSelection(group.project, boardName)}
+                                  >
+                                    <div className="board-details">
+                                      <DashboardOutlinedIcon className="board-icon" />
+                                      <div className="board-info">
+                                        <span className="board-name">{boardName}</span>
+                                      </div>
+                                    </div>
+                                    <div className="board-actions">
+                                      <IconButton 
+                                        size="small"
+                                        className={`board-action-button ${isSelected ? 'selected' : ''}`}
+                                      >
+                                        {isSelected ? (
+                                          <CheckCircleOutlineIcon className="check-icon" />
+                                        ) : (
+                                          <AddCircleOutlineIcon className="add-icon" />
+                                        )}
+                                      </IconButton>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ))}
+                        {getFilteredBoards().length === 0 && (
+                          <div className="no-results">
+                            <SearchOffIcon />
+                            <span>No boards found</span>
+                          </div>
+                        )}
+                      </div>
+                      {selectedBoards.length > 0 && (
+                        <div className="search-actions">
+                          <Button
+                            variant="contained"
+                            className="add-boards-button"
+                            onClick={handleAddBoards}
+                            sx={{
+                              borderRadius: '6px',
+                              textTransform: 'none',
+                              boxShadow: 'none',
+                              '&:hover': {
+                                boxShadow: 'none',
+                                backgroundColor: 'var(--primary-dark)',
+                              },
+                            }}
+                          >
+                            Add {selectedBoards.length} board{selectedBoards.length !== 1 ? 's' : ''}
+                          </Button>
                         </div>
                       )}
-                    </div>
+                    </Paper>
                   )}
                 </div>
-                
+
                 <div className="boards-list">
                   {connectedBoards.map((group, groupIndex) => (
                     <div key={groupIndex} className="project-group">
-                      <div className="project-name">{group.project}</div>
-                      {group.boards.map((board, boardIndex) => (
-                        <div key={boardIndex} className="board-item">
-                          <span>{board}</span>
-                          <CloseIcon 
-                            className="remove-icon" 
-                            onClick={() => handleRemoveBoard(group.project, board)}
-                          />
+                      <div className="project-name">
+                        <div className="project-header">
+                          <FolderOutlinedIcon className="project-icon" />
+                          <span>{group.project}</span>
                         </div>
-                      ))}
+                        <span className="board-count">{group.boards.length} board{group.boards.length !== 1 ? 's' : ''}</span>
+                      </div>
+                      <div className="board-list">
+                        {group.boards.map((board, boardIndex) => (
+                          <div key={boardIndex} className="workflow-board">
+                            <div className="board-details">
+                              <DashboardOutlinedIcon className="board-icon" />
+                              <div className="board-info">
+                                <span className="board-name">{board}</span>
+                              </div>
+                            </div>
+                            <div className="board-actions">
+                              <IconButton 
+                                size="small"
+                                className="remove-button"
+                                onClick={() => {
+                                  setConnectedBoards(prev => 
+                                    prev.map(g => 
+                                      g.project === group.project 
+                                        ? { ...g, boards: g.boards.filter(b => b !== board) }
+                                        : g
+                                    ).filter(g => g.boards.length > 0)
+                                  );
+                                }}
+                              >
+                                <CloseIcon fontSize="small" />
+                              </IconButton>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>

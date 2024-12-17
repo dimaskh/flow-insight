@@ -105,12 +105,20 @@
 }
 
 .portfolio-header {
-  padding: 16px 24px;
+  padding: 18px 24px;
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--background-paper);
+}
+
+.portfolio-header .delete-icon {
+  color: var(--text-secondary);
+}
+
+.portfolio-header .delete-icon:hover {
+  color: var(--error);
 }
 
 .portfolio-title {
@@ -136,8 +144,8 @@
 
 .portfolio-actions {
   display: flex;
-  gap: 16px;
   align-items: center;
+  gap: 16px;
 }
 
 .search-box {
